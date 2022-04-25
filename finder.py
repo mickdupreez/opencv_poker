@@ -2,27 +2,27 @@ import cv2 as cv
 import numpy as np
 
 
-def find(needle_img_path, haystack_img_path, threshold=0.9, debug_mode=None):
+def find(needle_img_path, haystack_img_path, threshold=0.8, debug_mode="rectangles"):
     
 
     haystack_img = cv.imread(haystack_img_path, cv.IMREAD_UNCHANGED)
     needle_img = cv.imread(needle_img_path, cv.IMREAD_UNCHANGED)
 
 
+
+
     needle_w = needle_img.shape[1]
     needle_h = needle_img.shape[0]
+    
 
 
     method = cv.TM_CCOEFF_NORMED
     result = cv.matchTemplate(haystack_img, needle_img, method)
-
+    
 
     locations = np.where(result >= threshold)
     locations = list(zip(*locations[::-1]))
     
-    
-
-
     rectangles = []
     for loc in locations:
         rect = [int(loc[0]), int(loc[1]), needle_w, needle_h]
@@ -64,7 +64,8 @@ def find(needle_img_path, haystack_img_path, threshold=0.9, debug_mode=None):
     return points
 
 
-points = find("screenshots/needle.png", "screenshots/heysatck.png", debug_mode="rectangles")
+
+points = find("screenshots/cards/5H.png", "screenshots/table1.png")
 
 
 
